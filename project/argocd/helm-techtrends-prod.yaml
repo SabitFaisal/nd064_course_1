@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'file:///home/ubuntu/nd064_course_1/project/helm'
+    repoURL: 'https://github.com/SabitFaisal/udacitycnfhelm.git'
     targetRevision: HEAD
-    path: templates
+    path: .
     helm:
       valueFiles:
         - values-prod.yaml
@@ -19,4 +19,3 @@ spec:
     automated:
       prune: true
       selfHeal: true
-
