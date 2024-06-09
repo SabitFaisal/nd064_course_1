@@ -1,22 +1,32 @@
 import sqlite3
-
-from flask import Flask, jsonify, json, render_template, request, url_for, redirect, flash
+from flask import Flask, jsonify, render_template, request, url_for, redirect, flash
 from werkzeug.exceptions import abort
 
+# Initialize global counter for database connections
+db_connection_count = 0
+
 # Function to get a database connection.
-# This function connects to database with the name `database.db`
+# This function connects to the database with the name `database.db`
 def get_db_connection():
+    global db_connection_count
     connection = sqlite3.connect('database.db')
     connection.row_factory = sqlite3.Row
+    db_connection_count += 1
     return connection
 
 # Function to get a post using its ID
 def get_post(post_id):
     connection = get_db_connection()
-    post = connection.execute('SELECT * FROM posts WHERE id = ?',
-                        (post_id,)).fetchone()
+    post = connection.execute('SELECT * FROM posts WHERE id = ?', (post_id,)).fetchone()
     connection.close()
     return post
+
+# Function to count total posts
+def get_post_count():
+    connection = get_db_connection()
+    post_count = connection.execute('SELECT COUNT(*) FROM posts').fetchone()[0]
+    connection.close()
+    return post_count
 
 # Define the Flask application
 app = Flask(__name__)
@@ -36,9 +46,9 @@ def index():
 def post(post_id):
     post = get_post(post_id)
     if post is None:
-      return render_template('404.html'), 404
+        return render_template('404.html'), 404
     else:
-      return render_template('post.html', post=post)
+        return render_template('post.html', post=post)
 
 # Define the About Us page
 @app.route('/about')
@@ -56,8 +66,7 @@ def create():
             flash('Title is required!')
         else:
             connection = get_db_connection()
-            connection.execute('INSERT INTO posts (title, content) VALUES (?, ?)',
-                         (title, content))
+            connection.execute('INSERT INTO posts (title, content) VALUES (?, ?)', (title, content))
             connection.commit()
             connection.close()
 
@@ -65,8 +74,7 @@ def create():
 
     return render_template('create.html')
 
-#monitoring
-#healthz
+# Define the health check endpoint
 @app.route('/healthz')
 def healthz():
     response = {
@@ -74,7 +82,15 @@ def healthz():
     }
     return jsonify(response), 200
 
+# Define the metrics endpoint
+@app.route('/metrics')
+def metrics():
+    response = {
+        "db_connection_count": db_connection_count,
+        "post_count": get_post_count()
+    }
+    return jsonify(response), 200
 
-# start the application on port 3111
+# Start the application on port 3111
 if __name__ == "__main__":
-   app.run(host='0.0.0.0', port='3111')
+    app.run(host='0.0.0.0', port=3111)
