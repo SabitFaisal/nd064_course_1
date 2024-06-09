@@ -1,11 +1,35 @@
 ## Docker commands used to build the application 
 # TODO: insert the docker build command
-
+docker build -t techtrends -f Dockerfile .
 ## Docker commands used to run the application
 # TODO: insert the docker run command
-
+docker run -d -p 7111:3111 techtrends
 ## Docker commands used to get the application logs
 # TODO: insert the docker logs command
-
+docker logs -f 9daf3f4e1802
 ## Logs from the container running the TechTrends application
 # TODO: paste logs from the Docker container 
+(cnf-venv) ➜  ~ docker logs -f 9daf3f4e1802
+ * Serving Flask app 'app.py' (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+2024-06-09 14:50:52,478 WARNING: * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2024-06-09 14:50:52,478 INFO: * Running on http://172.17.0.2:3111/ (Press CTRL+C to quit)
+2024-06-09 14:51:07,457 INFO:192.168.65.1 - - [09/Jun/2024 14:51:07] "GET / HTTP/1.1" 200 -
+2024-06-09 14:52:25,447 INFO:192.168.65.1 - - [09/Jun/2024 14:52:25] "GET / HTTP/1.1" 200 -
+2024-06-09 14:52:25,467 INFO:192.168.65.1 - - [09/Jun/2024 14:52:25] "GET /static/css/main.css HTTP/1.1" 200 -
+2024-06-09 14:52:25,552 INFO:192.168.65.1 - - [09/Jun/2024 14:52:25] "GET /favicon.ico HTTP/1.1" 404 -
+2024-06-09 14:52:28,477 INFO:2024-06-09 14:52:28.476945, Article "2020 CNCF Annual Report" retrieved!
+2024-06-09 14:52:28,483 INFO:192.168.65.1 - - [09/Jun/2024 14:52:28] "GET /1 HTTP/1.1" 200 -
+2024-06-09 14:52:28,501 INFO:192.168.65.1 - - [09/Jun/2024 14:52:28] "GET /static/css/main.css HTTP/1.1" 304 -
+2024-06-09 14:53:04,737 INFO:192.168.65.1 - - [09/Jun/2024 14:53:04] "GET / HTTP/1.1" 200 -
+2024-06-09 14:53:04,748 INFO:192.168.65.1 - - [09/Jun/2024 14:53:04] "GET /static/css/main.css HTTP/1.1" 304 -
+2024-06-09 14:54:00,207 INFO:192.168.65.1 - - [09/Jun/2024 14:54:00] "GET /create HTTP/1.1" 200 -
+2024-06-09 14:54:00,221 INFO:192.168.65.1 - - [09/Jun/2024 14:54:00] "GET /static/css/main.css HTTP/1.1" 304 -
+2024-06-09 14:54:14,953 INFO:2024-06-09 14:54:14.952890, New article "hello from renesas" created!
+2024-06-09 14:54:14,954 INFO:192.168.65.1 - - [09/Jun/2024 14:54:14] "POST /create HTTP/1.1" 302 -
+2024-06-09 14:54:14,961 INFO:192.168.65.1 - - [09/Jun/2024 14:54:14] "GET / HTTP/1.1" 200 -
+2024-06-09 14:54:14,979 INFO:192.168.65.1 - - [09/Jun/2024 14:54:14] "GET /static/css/main.css HTTP/1.1" 304 -
